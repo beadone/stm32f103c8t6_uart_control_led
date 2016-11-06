@@ -30,7 +30,7 @@
   void Usart2Init(void);
   void UART2Send(const unsigned char *pucBuffer, unsigned long ulCount);
   void USART2_IRQHandler(void);
-
+  void led_init(void);
 
 // ----------------------------------------------------------------------------
 
@@ -61,11 +61,24 @@ main(int argc, char* argv[])
   timer_start();
 
   blink_led_init();
+  led_init();
+
+
+
   Usart1Init();
   Usart2Init();
-
-
-
+  GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+  timer_sleep(BLINK_ON_TICKS);
+  GPIO_ResetBits(GPIOB, GPIO_Pin_6);
+  timer_sleep(BLINK_ON_TICKS);
+  GPIO_ResetBits(GPIOB, GPIO_Pin_7);
+  timer_sleep(BLINK_ON_TICKS);
+  GPIO_ResetBits(GPIOB, GPIO_Pin_8);
+  timer_sleep(BLINK_ON_TICKS);
+  GPIO_SetBits(GPIOB, GPIO_Pin_5);
+  GPIO_SetBits(GPIOB, GPIO_Pin_6);
+  GPIO_SetBits(GPIOB, GPIO_Pin_7);
+  GPIO_SetBits(GPIOB, GPIO_Pin_8);
 
   // Infinite loop
   while (1)
@@ -93,6 +106,29 @@ void blink_led_init()
   // Start with led turned off
   blink_led_off();
 }
+
+void led_init()
+{
+  // Enable GPIO Peripheral clock
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+
+  GPIO_InitTypeDef GPIO_InitStructure;
+
+  // Configure pin in output push/pull mode
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  // Start with leds turned off
+  GPIO_SetBits(GPIOB, GPIO_Pin_5);
+  GPIO_SetBits(GPIOB, GPIO_Pin_6);
+  GPIO_SetBits(GPIOB, GPIO_Pin_7);
+  GPIO_SetBits(GPIOB, GPIO_Pin_8);
+
+}
+
+
 
 #if defined(USE_HAL_DRIVER)
 void HAL_IncTick(void);
