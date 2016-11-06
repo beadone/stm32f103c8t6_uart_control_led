@@ -75,10 +75,19 @@ main(int argc, char* argv[])
   timer_sleep(BLINK_ON_TICKS);
   GPIO_ResetBits(GPIOB, GPIO_Pin_8);
   timer_sleep(BLINK_ON_TICKS);
-  GPIO_SetBits(GPIOB, GPIO_Pin_5);
-  GPIO_SetBits(GPIOB, GPIO_Pin_6);
-  GPIO_SetBits(GPIOB, GPIO_Pin_7);
-  GPIO_SetBits(GPIOB, GPIO_Pin_8);
+  //GPIO_SetBits(GPIOB, GPIO_Pin_5);
+  //GPIO_SetBits(GPIOB, GPIO_Pin_6);
+  //GPIO_SetBits(GPIOB, GPIO_Pin_7);
+  //GPIO_SetBits(GPIOB, GPIO_Pin_8);
+// BLINK_OFF_TICKS
+  timer_sleep(BLINK_OFF_TICKS);
+  timer_sleep(BLINK_OFF_TICKS);
+  //GPIO_SetBits(GPIOB, GPIO_Pin_5);
+  //GPIO_SetBits(GPIOB, GPIO_Pin_6);
+  //GPIO_SetBits(GPIOB, GPIO_Pin_7);
+  //GPIO_SetBits(GPIOB, GPIO_Pin_8);
+
+
 
   // Infinite loop
   while (1)
@@ -320,9 +329,6 @@ void USART2_IRQHandler()
 {
 
   unsigned char received;
-
-
-
     if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) // Received characters modify string
       {
 
@@ -334,6 +340,53 @@ void USART2_IRQHandler()
       USART_SendData(USART1, received);  //debug
       //USART_SendData(USART1, 0xD);
       //USART_SendData(USART1, 0xA);
+
+
+      switch (received) {
+          case 'w':
+              //  Turn on led
+            GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+              break;
+          case 'a':
+              //  Turn on led
+            GPIO_ResetBits(GPIOB, GPIO_Pin_6);
+              break;
+          case 'z':
+              //  Turn on led
+            GPIO_ResetBits(GPIOB, GPIO_Pin_7);
+              break;
+          case 's':
+              // Turn on led
+            GPIO_ResetBits(GPIOB, GPIO_Pin_8);
+              break;
+          case 'r':
+              // code to be executed if n is equal to constant2;
+            GPIO_SetBits(GPIOB, GPIO_Pin_5);
+              break;
+          case 'd':
+              // code to be executed if n is equal to constant2;
+            GPIO_SetBits(GPIOB, GPIO_Pin_6);
+              break;
+          case 'c':
+              // code to be executed if n is equal to constant2;
+            GPIO_SetBits(GPIOB, GPIO_Pin_7);
+              break;
+          case 'f':
+              // code to be executed if n is equal to constant2;
+            GPIO_SetBits(GPIOB, GPIO_Pin_8);
+              break;
+
+          //default :
+            //do nothing
+              // code to be executed if n doesn't match any constant
+      }
+
+
+
+
+
+
+
 
       }
 
